@@ -23,6 +23,17 @@ let ai = {
   speed: 4
 };
 
+// Scoreboard
+let playerScore = 0;
+let aiScore = 0;
+const playerScoreElem = document.getElementById('player1-score');
+const aiScoreElem = document.getElementById('player2-score');
+
+function updateScoreboard() {
+  if (playerScoreElem) playerScoreElem.textContent = playerScore;
+  if (aiScoreElem) aiScoreElem.textContent = aiScore;
+}
+
 // Ball object
 let ball = {
   x: canvas.width / 2,
@@ -101,7 +112,15 @@ function update() {
   }
 
   // Score check (reset if ball goes off left or right)
-  if (ball.x - BALL_RADIUS < 0 || ball.x + BALL_RADIUS > canvas.width) {
+  if (ball.x - BALL_RADIUS < 0) {
+    // AI scores
+    aiScore++;
+    updateScoreboard();
+    resetBall();
+  } else if (ball.x + BALL_RADIUS > canvas.width) {
+    // Player scores
+    playerScore++;
+    updateScoreboard();
     resetBall();
   }
 
@@ -142,5 +161,6 @@ function loop() {
   requestAnimationFrame(loop);
 }
 
-// Start game
+// Initialize scoreboard and start game
+updateScoreboard();
 loop();
